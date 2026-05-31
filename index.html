@@ -1,104 +1,367 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School Result System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Result System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
 
-<style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f0f2f5;
-    text-align:center;
-    margin:0;
-    padding:20px;
-}
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
 
-.container{
-    max-width:500px;
-    margin:auto;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
-}
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-input{
-    width:90%;
-    padding:10px;
-    margin:8px;
-}
+        button {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 90%;
+        }
 
-button{
-    padding:10px 20px;
-    background:green;
-    color:white;
-    border:none;
-    cursor:pointer;
-    border-radius:5px;
-}
+        button:hover {
+            background-color: darkgreen;
+        }
 
-.result{
-    margin-top:20px;
-    font-size:18px;
-}
-</style>
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            padding: 15px;
+            background-color: #e7f5ff;
+            border-radius: 5px;
+            display: none; /* शुरुआत में छुपा रहेगा */
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
-<h2>School Result System</h2>
-
-<input type="text" id="name" placeholder="Student Name"><br>
-
-<input type="number" id="math" placeholder="Math Marks"><br>
-
-<input type="number" id="science" placeholder="Science Marks"><br>
-
-<input type="number" id="english" placeholder="English Marks"><br>
-
-<button onclick="calculateResult()">Show Result</button>
-
-<div class="result" id="output"></div>
+    <h2>School Result System</h2>
+    
+    <input type="text" id="name" placeholder="Student Name"><br>
+    <input type="number" id="math" placeholder="Math Marks" min="0" max="100"><br>
+    <input type="number" id="science" placeholder="Science Marks" min="0" max="100"><br>
+    <input type="number" id="english" placeholder="English Marks" min="0" max="100"><br>
+    
+    <button onclick="calculateResult()">Show Result</button>
+    
+    <div class="result" id="output"></div>
 </div>
 
 <script>
-function calculateResult(){
+function calculateResult() {
+    // इनपुट फील्ड्स से वैल्यू (नंबर) निकालना
+    let name = document.getElementById("name").value.trim();
+    let math = Number(document.getElementById("math").value);
+    let science = Number(document.getElementById("science").value);
+    let english = Number(document.getElementById("english").value);
+    let outputDiv = document.getElementById("output");
 
-let name=document.getElementById("name").value;
-let math=Number(document.getElementById("math").value);
-let science=Number(document.getElementById("science").value);
-let english=Number(document.getElementById("english").value);
+    // अगर नाम खाली है तो अलर्ट दिखाना
+    if (name === "") {
+        alert("कृपया छात्र का नाम दर्ज करें!");
+        return;
+    }
 
-let total=math+science+english;
-let percentage=total/3;
+    // कुल नंबर और प्रतिशत (Percentage) की गणना
+    let total = math + science + english;
+    let percentage = total / 3;
+    let grade = "";
 
-let grade="";
+    // प्रतिशत के आधार पर ग्रेड तय करना
+    if (percentage >= 90) {
+        grade = "A+ (उत्कृष्ट)";
+    } else if (percentage >= 75) {
+        grade = "A (बहुत अच्छा)";
+    } else if (percentage >= 50) {
+        grade = "B (अच्छा)";
+    } else if (percentage >= 33) {
+        grade = "C (पास)";
+    } else {
+        grade = "Fail (अनुत्तीर्ण)";
+    }
 
-if(percentage>=90){
-grade="A+";
+    // रिजल्ट को सुंदर तरीके से स्क्रीन पर दिखाना
+    outputDiv.style.display = "block"; // रिजल्ट बॉक्स को दिखाना
+    outputDiv.innerHTML = `
+        <strong>नतीजा (Result):</strong><br><br>
+        👤 छात्र का नाम: ${name}<br>
+        📊 कुल प्राप्तांक: ${total} / 300<br>
+        📈 प्रतिशत: ${percentage.toFixed(2)}%<br>
+        🏅 ग्रेड: ${grade}
+    `;
 }
-else if(percentage>=75){
-grade="A";
-}
-else if(percentage>=60){
-grade="B";
-}
-else if(percentage>=40){
-grade="C";
-}
-else{
-grade="Fail";
-}
+</script>
 
-document.getElementById("output").innerHTML=
-`
-<h3>${name}</h3>
-<p>Total Marks: ${total}</p>
-<p>Percentage: ${percentage.toFixed(2)}%</p>
-<p>Grade: ${grade}</p>
-`;
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Result System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 90%;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            padding: 15px;
+            background-color: #e7f5ff;
+            border-radius: 5px;
+            display: none; /* शुरुआत में छुपा रहेगा */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>School Result System</h2>
+    
+    <input type="text" id="name" placeholder="Student Name"><br>
+    <input type="number" id="math" placeholder="Math Marks" min="0" max="100"><br>
+    <input type="number" id="science" placeholder="Science Marks" min="0" max="100"><br>
+    <input type="number" id="english" placeholder="English Marks" min="0" max="100"><br>
+    
+    <button onclick="calculateResult()">Show Result</button>
+    
+    <div class="result" id="output"></div>
+</div>
+
+<script>
+function calculateResult() {
+    // इनपुट फील्ड्स से वैल्यू (नंबर) निकालना
+    let name = document.getElementById("name").value.trim();
+    let math = Number(document.getElementById("math").value);
+    let science = Number(document.getElementById("science").value);
+    let english = Number(document.getElementById("english").value);
+    let outputDiv = document.getElementById("output");
+
+    // अगर नाम खाली है तो अलर्ट दिखाना
+    if (name === "") {
+        alert("कृपया छात्र का नाम दर्ज करें!");
+        return;
+    }
+
+    // कुल नंबर और प्रतिशत (Percentage) की गणना
+    let total = math + science + english;
+    let percentage = total / 3;
+    let grade = "";
+
+    // प्रतिशत के आधार पर ग्रेड तय करना
+    if (percentage >= 90) {
+        grade = "A+ (उत्कृष्ट)";
+    } else if (percentage >= 75) {
+        grade = "A (बहुत अच्छा)";
+    } else if (percentage >= 50) {
+        grade = "B (अच्छा)";
+    } else if (percentage >= 33) {
+        grade = "C (पास)";
+    } else {
+        grade = "Fail (अनुत्तीर्ण)";
+    }
+
+    // रिजल्ट को सुंदर तरीके से स्क्रीन पर दिखाना
+    outputDiv.style.display = "block"; // रिजल्ट बॉक्स को दिखाना
+    outputDiv.innerHTML = `
+        <strong>नतीजा (Result):</strong><br><br>
+        👤 छात्र का नाम: ${name}<br>
+        📊 कुल प्राप्तांक: ${total} / 300<br>
+        📈 प्रतिशत: ${percentage.toFixed(2)}%<br>
+        🏅 ग्रेड: ${grade}
+    `;
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Result System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 90%;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            padding: 15px;
+            background-color: #e7f5ff;
+            border-radius: 5px;
+            display: none; /* शुरुआत में छुपा रहेगा */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>School Result System</h2>
+    
+    <input type="text" id="name" placeholder="Student Name"><br>
+    <input type="number" id="math" placeholder="Math Marks" min="0" max="100"><br>
+    <input type="number" id="science" placeholder="Science Marks" min="0" max="100"><br>
+    <input type="number" id="english" placeholder="English Marks" min="0" max="100"><br>
+    
+    <button onclick="calculateResult()">Show Result</button>
+    
+    <div class="result" id="output"></div>
+</div>
+
+<script>
+function calculateResult() {
+    // इनपुट फील्ड्स से वैल्यू (नंबर) निकालना
+    let name = document.getElementById("name").value.trim();
+    let math = Number(document.getElementById("math").value);
+    let science = Number(document.getElementById("science").value);
+    let english = Number(document.getElementById("english").value);
+    let outputDiv = document.getElementById("output");
+
+    // अगर नाम खाली है तो अलर्ट दिखाना
+    if (name === "") {
+        alert("कृपया छात्र का नाम दर्ज करें!");
+        return;
+    }
+
+    // कुल नंबर और प्रतिशत (Percentage) की गणना
+    let total = math + science + english;
+    let percentage = total / 3;
+    let grade = "";
+
+    // प्रतिशत के आधार पर ग्रेड तय करना
+    if (percentage >= 90) {
+        grade = "A+ (उत्कृष्ट)";
+    } else if (percentage >= 75) {
+        grade = "A (बहुत अच्छा)";
+    } else if (percentage >= 50) {
+        grade = "B (अच्छा)";
+    } else if (percentage >= 33) {
+        grade = "C (पास)";
+    } else {
+        grade = "Fail (अनुत्तीर्ण)";
+    }
+
+    // रिजल्ट को सुंदर तरीके से स्क्रीन पर दिखाना
+    outputDiv.style.display = "block"; // रिजल्ट बॉक्स को दिखाना
+    outputDiv.innerHTML = `
+        <strong>नतीजा (Result):</strong><br><br>
+        👤 छात्र का नाम: ${name}<br>
+        📊 कुल प्राप्तांक: ${total} / 300<br>
+        📈 प्रतिशत: ${percentage.toFixed(2)}%<br>
+        🏅 ग्रेड: ${grade}
+    `;
 }
 </script>
 
