@@ -1,27 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-    <title>Mera Pehla Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Result System</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f0f2f5;
+    text-align:center;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:500px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:8px;
+}
+
+button{
+    padding:10px 20px;
+    background:green;
+    color:white;
+    border:none;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+.result{
+    margin-top:20px;
+    font-size:18px;
+}
+</style>
 </head>
+
 <body>
 
-    <h1>Google Jaisa Page Banayein</h1>
-    <p>Ye mera pehla HTML code hai.</p>
-    
-    <button onclick="alert('Namaste!')">Click Karein</button>
+<div class="container">
+<h2>School Result System</h2>
 
-</body>
-</html<!DOCTYPE html>
-<html>
-<head>
-    <title>Mera Pehla Page</title>
-</head>
-<body>
+<input type="text" id="name" placeholder="Student Name"><br>
 
-    <h1>Google Jaisa Page Banayein</h1>
-    <p>Ye mera pehla HTML code hai.</p>
-    
-    <button onclick="alert('Namaste!')">Click Karein</button>
+<input type="number" id="math" placeholder="Math Marks"><br>
+
+<input type="number" id="science" placeholder="Science Marks"><br>
+
+<input type="number" id="english" placeholder="English Marks"><br>
+
+<button onclick="calculateResult()">Show Result</button>
+
+<div class="result" id="output"></div>
+</div>
+
+<script>
+function calculateResult(){
+
+let name=document.getElementById("name").value;
+let math=Number(document.getElementById("math").value);
+let science=Number(document.getElementById("science").value);
+let english=Number(document.getElementById("english").value);
+
+let total=math+science+english;
+let percentage=total/3;
+
+let grade="";
+
+if(percentage>=90){
+grade="A+";
+}
+else if(percentage>=75){
+grade="A";
+}
+else if(percentage>=60){
+grade="B";
+}
+else if(percentage>=40){
+grade="C";
+}
+else{
+grade="Fail";
+}
+
+document.getElementById("output").innerHTML=
+`
+<h3>${name}</h3>
+<p>Total Marks: ${total}</p>
+<p>Percentage: ${percentage.toFixed(2)}%</p>
+<p>Grade: ${grade}</p>
+`;
+}
+</script>
 
 </body>
 </html>
